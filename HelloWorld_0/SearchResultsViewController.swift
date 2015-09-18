@@ -69,7 +69,7 @@ class SearchResultsViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
-    func didRecieveAPIResults(results: NSArray) {
+    func didReceiveAPIResults(results: NSArray) {
         dispatch_async(dispatch_get_main_queue(), {
             self.albums = Album.albumsWithJSON(results)
             self.appsTableView!.reloadData()

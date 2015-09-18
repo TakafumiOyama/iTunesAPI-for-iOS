@@ -9,7 +9,7 @@
 import Foundation
 
 protocol APIControllerProtocol {
-    func didRecieveAPIResults(results: NSArray)
+    func didReceiveAPIResults(results: NSArray)
 }
 
 class APIController {
@@ -34,7 +34,7 @@ class APIController {
                     println("JSON Error \(err!.localizedDescription)")
                 }
                 if let results: NSArray = jsonResult["results"] as? NSArray{
-                    self.delegate.didRecieveAPIResults(results)
+                    self.delegate.didReceiveAPIResults(results)
                 }
             }
         })

@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class DetailsViewController: UIViewController, APIControllerProtocol {
     
+    var mediaPlayer: MPMoviePlayerController = MPMoviePlayerController()
     lazy var api: APIController = APIController(delegate: self)
     
     var tracks = [Track]()
@@ -43,6 +45,23 @@ class DetailsViewController: UIViewController, APIControllerProtocol {
         return cell
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        var track = tracks[indexPath.row]
+        mediaPlayer.stop()
+        mediaPlayer.contentURL = NSURL(string: track.previewUrl)
+        mediaPlayer.play()
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? TrackCell{
+            cell.playIcon.text = "▶️"
+        }
+        
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath){
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        UIView.animateWithDuration(0.25, animations: {cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        })
+    }
+    
     func didReceiveAPIResults(results: NSArray) {
         dispatch_async(dispatch_get_main_queue(), {
             self.tracks = Track.tracksWithJSON(results)
@@ -50,5 +69,6 @@ class DetailsViewController: UIViewController, APIControllerProtocol {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         })
     }
+    
     
 }
